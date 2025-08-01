@@ -61,13 +61,23 @@ function renderFilteredTasks(filteredTasks) {
     filteredTasks.forEach(task => {
         const li = document.createElement('li');
         li.className = 'list-group-item';
-        li.innerHTML = `
-            <h5>${task.title}</h5>
-            <p>${task.description}</p>
-        `;
+        // Antes (en renderTasks):
+li.innerHTML = `
+    <h5>${task.title}</h5>
+    <p>${task.description}</p>
+`;
+
+// Después (con fecha "arreglada"):
+li.innerHTML = `
+    <h5>${task.title}</h5>
+    <p>${task.description}</p>
+    <small>Fecha: ${new Date().toLocaleDateString()}</small>  // ¡Hotfix aplicado!
+`;
         taskList.appendChild(li);
     });
 }
+
+
 
 function editTask(id) {
     const task = tasks.find(task => task.id == id);
