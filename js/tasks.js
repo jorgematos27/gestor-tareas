@@ -44,10 +44,30 @@ document.getElementById('taskForm').addEventListener('submit', function(e) {
     this.reset();
 });
 
-// Buscar
+// Función para buscar tareas
 document.getElementById('searchInput').addEventListener('input', function(e) {
-    renderTasks(e.target.value);
+    const searchTerm = e.target.value.toLowerCase();
+    const filteredTasks = tasks.filter(task => 
+        task.title.toLowerCase().includes(searchTerm) || 
+        task.description.toLowerCase().includes(searchTerm)
+    );
+    renderFilteredTasks(filteredTasks); // Llama a una función para mostrar resultados
 });
+
+// Muestra las tareas filtradas
+function renderFilteredTasks(filteredTasks) {
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = '';
+    filteredTasks.forEach(task => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item';
+        li.innerHTML = `
+            <h5>${task.title}</h5>
+            <p>${task.description}</p>
+        `;
+        taskList.appendChild(li);
+    });
+}
 
 function editTask(id) {
     const task = tasks.find(task => task.id == id);
