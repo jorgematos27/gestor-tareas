@@ -87,5 +87,13 @@ function deleteTask(id) {
     renderTasks(document.getElementById('searchInput').value);
 }
 
-// Inicializar
-document.addEventListener('DOMContentLoaded', renderTasks);
+// Inicializar y mostrar nombre de usuario
+document.addEventListener('DOMContentLoaded', function() {
+    const username = localStorage.getItem('currentUser');
+    if (username) {
+        document.getElementById('welcomeMessage').textContent = `¡Hola, ${username}!`;
+    } else {
+        window.location.href = 'index.html'; 
+    }
+    renderTasks(); // Renderizar tareas al cargar
+});
