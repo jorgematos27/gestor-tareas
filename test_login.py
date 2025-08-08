@@ -21,36 +21,34 @@ try:
     print("Prueba 1 - Login exitoso: PASÓ")
     test_results.append({"test": "Login exitoso", "status": "PASÓ"})
 
-    # Regresar a index.html para la siguiente prueba
+    # Prueba 2: Campos vacíos en login
+    print("Ejecutando Prueba 2: Campos vacíos en login")
     driver.get('http://localhost:8080/index.html')
-
-    # Prueba 2: Campos vacíos
-    print("Ejecutando Prueba 2: Campos vacíos")
     driver.find_element(By.ID, 'username').clear()
     driver.find_element(By.ID, 'password').clear()
     driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]').click()
     time.sleep(1)
     assert 'index.html' in driver.current_url or 'dashboard.html' not in driver.current_url
     error_message = driver.find_elements(By.CLASS_NAME, 'text-danger')
-    assert len(error_message) > 0, "No se mostró mensaje de error para campos vacíos"
-    print("Prueba 2 - Campos vacíos: PASÓ")
-    test_results.append({"test": "Campos vacíos", "status": "PASÓ"})
+    assert len(error_message) > 0, "No se mostró mensaje de error para campos vacíos en login"
+    print("Prueba 2 - Campos vacíos en login: PASÓ")
+    test_results.append({"test": "Campos vacíos en login", "status": "PASÓ"})
 
 except AssertionError as e:
     print(f"Prueba falló: {str(e)}")
-    test_results.append({"test": "Login exitoso" if len(test_results) == 0 else "Campos vacíos", "status": "FALLÓ", "error": str(e)})
+    test_results.append({"test": "Login exitoso" if len(test_results) == 0 else "Campos vacíos en login", "status": "FALLÓ", "error": str(e)})
 except Exception as e:
     print(f"Error inesperado: {str(e)}")
-    test_results.append({"test": "Login exitoso" if len(test_results) == 0 else "Campos vacíos", "status": "FALLÓ", "error": str(e)})
+    test_results.append({"test": "Login exitoso" if len(test_results) == 0 else "Campos vacíos en login", "status": "FALLÓ", "error": str(e)})
 finally:
     # Generar reporte HTML
-    with open('test_results.html', 'w', encoding='utf-8') as f:
+    with open('test_results_login.html', 'w', encoding='utf-8') as f:
         f.write('<!DOCTYPE html>\n<html lang="es">\n<head>\n')
-        f.write('<meta charset="UTF-8">\n<title>Resultado de Pruebas - Gestor de Tareas</title>\n')
+        f.write('<meta charset="UTF-8">\n<title>Resultado de Pruebas - Login</title>\n')
         f.write('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">\n')
         f.write('</head>\n<body class="bg-light">\n')
         f.write('<div class="container mt-5">\n')
-        f.write('<h1 class="text-center">Reporte de Pruebas Automatizadas</h1>\n')
+        f.write('<h1 class="text-center">Reporte de Pruebas - Login</h1>\n')
         f.write('<table class="table table-striped">\n<thead><tr><th>Prueba</th><th>Estado</th><th>Detalles</th></tr></thead>\n<tbody>\n')
         for result in test_results:
             status_class = "text-success" if result["status"] == "PASÓ" else "text-danger"
@@ -58,7 +56,6 @@ finally:
             f.write(f'<tr><td>{result["test"]}</td><td class="{status_class}">{result["status"]}</td><td>{details}</td></tr>\n')
         f.write('</tbody>\n</table>\n')
         f.write('</div>\n</body>\n</html>')
-    print("Reporte generado en test_results.html")
-
+    print("Reporte generado en test_results_login.html")
     driver.quit()
     print("Pruebas completadas")
